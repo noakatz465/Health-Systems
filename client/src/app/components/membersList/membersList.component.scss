@@ -1,0 +1,22 @@
+ .container{
+    width: 20%;
+ }
+ .button{
+    margin-left: 40%;
+    margin-top: 10px;
+ }
+  
+.row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .member-card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px auto;
+        width: 300px;
+        text-align: center;
+    }
+}

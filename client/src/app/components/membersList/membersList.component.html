@@ -1,0 +1,73 @@
+<button class="btn btn-primary button" (click)="addForm()">{{add? 'Cancel':
+    'Add member'}}</button>
+<h3 [(ngModel)]="unvaccinatedMembersCount">Not vaccinated: {{unvaccinatedMembersCount}}</h3>
+<div class="row">
+    <div *ngFor="let member of members" class="member-card">
+        <app-member (afterEdit)="calculateUnvaccinatedMembers()" [vaccines]="vaccinesArray" [member]="member" (delete)="deleteMember($event)"></app-member>
+    </div>
+</div>
+<p-dialog header="Add New Member" [(visible)]="add" [style]="{width: '30%'}" (onHide)="onDialogClose()">
+    <div class="form-group">
+        <label for="firstName">First Name:</label>
+        <input type="text" class="form-control" id="firstName" [(ngModel)]="newMember.firstName" name="firstName"
+            required>
+    </div>
+    <div class="form-group">
+        <label for="lastName">Last Name:</label>
+        <input type="text" class="form-control" id="lastName" [(ngModel)]="newMember.lastName" name="lastName" required>
+    </div>
+    <div class="form-group">
+        <label for="idNumber">ID Number:</label>
+        <input type="text" class="form-control" id="idNumber" [(ngModel)]="newMember.idNumber" name="idNumber" required>
+    </div>
+    <div class="form-group">
+        <label for="city">City:</label>
+        <input type="text" class="form-control" id="city" [(ngModel)]="newMember.address.city" name="city" required>
+    </div>
+    <div class="form-group">
+        <label for="street">Street:</label>
+        <input type="text" class="form-control" id="street" [(ngModel)]="newMember.address.street" name="street"
+            required>
+    </div>
+    <div class="form-group">
+        <label for="number">Number:</label>
+        <input type="text" class="form-control" id="number" [(ngModel)]="newMember.address.number" name="number"
+            required>
+    </div>
+    <div class="form-group">
+        <label for="dateOfBirth">Date Of Birth:</label><br>
+        <p-calendar [(ngModel)]="newMember.dateOfBirth" [showIcon]="true" id="dateOfBirth"
+            name="dateOfBirth"></p-calendar>
+    </div>
+    <div class="form-group">
+        <label for="phone">phone:</label>
+        <input type="text" class="form-control" id="phone" [(ngModel)]="newMember.phone" name="phone" required>
+    </div>
+    <div class="form-group">
+        <label for="mobile">mobile:</label>
+        <input type="text" class="form-control" id="mobile" [(ngModel)]="newMember.mobile" name="mobile" required>
+    </div>
+    <div *ngFor="let vaccination of vaccinationsArray">
+        <div class="form-group">
+            <label for="manufacturer">Manufacturer:</label><br>
+            <p-dropdown id="manufacturer" [options]="vaccinesArray" [(ngModel)]="vaccination.manufacturer" [showClear]="true"
+                name="manufacturer" placeholder="Select a manufacturer"></p-dropdown>
+        </div>
+        <div class="form-group">
+            <label for="dateReceived">Date received:</label><br>
+            <p-calendar [(ngModel)]="vaccination.dateReceived" [showIcon]="true" id="dateReceived"
+                name="dateReceived"></p-calendar>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="positiveTestDate">Positive test date:</label><br>
+        <p-calendar [(ngModel)]="newMember.positiveTestDate" [showIcon]="true" id="positiveTestDate"
+            name="positiveTestDate"></p-calendar>
+    </div>
+    <div class="form-group">
+        <label for="recoveryDate">Recovery date:</label><br>
+        <p-calendar [(ngModel)]="newMember.recoveryDate" [showIcon]="true" id="recoveryDate"
+            name="recoveryDate"></p-calendar>
+    </div>
+    <button (click)="addMember()" type="submit" class="btn btn-primary">Save</button>
+</p-dialog>

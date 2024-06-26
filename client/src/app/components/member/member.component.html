@@ -1,0 +1,86 @@
+<p>First Name: {{ member.firstName }}</p>
+<p>Last Name: {{ member.lastName }}</p>
+<p>ID Number: {{ member.idNumber }}</p>
+<div *ngIf="show && !showForEdit">
+    <p-dialog header="" [(visible)]="show" [style]="{width: '50vw'}">
+        <p>First Name: {{ member.firstName }}</p>
+        <p>Last Name: {{ member.lastName }}</p>
+        <p>ID Number: {{ member.idNumber }}</p>
+        <p>Date of birth: {{member.dateOfBirth | date:'dd/MM/yyyy'}}</p>
+        <p>Phone: {{member.phone}}</p>
+        <p>Mobile: {{member.mobile}}</p>
+        <p>Address: {{member.address.city}} {{member.address.street}} {{member.address.number}}</p>
+        <div *ngIf="member.image">
+            <p-image src="member.image" alt="member-image" width="100"></p-image>
+
+        </div>
+        <div *ngFor="let vaccination of member.vaccinations">
+            <p>Manufacturer: {{vaccination.manufacturer}}</p>
+            <p>Received date: {{vaccination.dateReceived | date:'dd/MM/yyyy'}}</p>
+        </div>
+        <p *ngIf="member.positiveTestDate">Positive test date: {{member.positiveTestDate | date:'dd/MM/yyyy'}}</p>
+        <p *ngIf="member.recoveryDate">Recovery date: {{member.recoveryDate | date:'dd/MM/yyyy'}}</p>
+    </p-dialog>
+</div>
+<p-dialog header="Edit member" [(visible)]="showForEdit" [style]="{width: '50vw'}" (onHide)="onDialogClose()">
+    <div class="form-group">
+        <input type="text" [(ngModel)]="member.firstName" class="form-control" placeholder="First Name" required>
+    </div>
+    <div class="form-group">
+        <input type="text" [(ngModel)]="member.lastName" class="form-control" placeholder="Last Name" required>
+    </div>
+    <div class="form-group">
+        <input type="text" [(ngModel)]="member.phone" class="form-control" placeholder="Phone" required>
+    </div>
+    <div class="form-group">
+        <input type="text" [(ngModel)]="member.mobile" class="form-control" placeholder="Mobile" required>
+    </div>
+    <div class="form-group">
+        <input type="text" [(ngModel)]="member.address.city" class="form-control" placeholder="City" required>
+    </div>
+    <div class="form-group">
+        <input type="text" [(ngModel)]="member.address.street" class="form-control" placeholder="Street" required>
+    </div>
+    <div class="form-group">
+        <input type="text" [(ngModel)]="member.address.number" class="form-control" placeholder="Number" required>
+    </div>
+    <div *ngIf="member.image">
+        <p>Current Image:</p>
+        <p-image src="member.image" alt="member-image" width="100" (change)="onFileSelected($event)" accept="image/*"></p-image>
+        <button class="btn btn-primary" (click)="deleteImage()">Delete Image</button>
+    </div>
+    <div *ngIf="!member.image" class="form-group">
+        <input type="file" [(ngModel)]="member.image" (change)="onFileSelected($event)" accept="image/*"
+            class="form-control-file" />
+    </div>
+    <div *ngIf="member.vaccinations.length < 4">
+        <div *ngFor="let vaccination of vaccinationsArray">
+            <div class="form-group">
+                <p-dropdown [options]="vaccines" [(ngModel)]="vaccination.manufacturer" [showClear]="true"
+                    placeholder="Select a manufacturer"></p-dropdown>
+            </div>
+            <div class="form-group">
+                <p-calendar [(ngModel)]="vaccination.dateReceived" [showIcon]="true"
+                    placeholder="date received"></p-calendar>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!member.positiveTestDate" class="form-group">
+        <p-calendar [(ngModel)]="member.positiveTestDate" [showIcon]="true"
+            placeholder="positive test date"></p-calendar>
+    </div>
+    <div *ngIf="!member.recoveryDate" class="form-group">
+        <p-calendar [(ngModel)]="member.recoveryDate" [showIcon]="true" placeholder="recovery date"></p-calendar>
+    </div>
+    <br>
+    <button class="btn btn-primary" type="submit" (click)="saveEdit()">save</button>
+</p-dialog>
+
+<div class="button-container">
+    <button class="btn btn-primary" *ngIf="!showForEdit" (click)="edit()">Edit</button>
+    <button class="btn btn-primary" (click)="deleteMember()">Delete</button>
+    <button class="btn btn-primary" (click)="showHideDetails()">{{show? 'Hide details':
+        'Details'}}</button>
+
+
+</div>
